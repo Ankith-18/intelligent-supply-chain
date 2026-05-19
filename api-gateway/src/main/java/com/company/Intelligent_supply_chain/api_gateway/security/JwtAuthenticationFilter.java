@@ -123,7 +123,6 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         } catch (Exception e) {
 
             log.error("JWT authentication failed", e);
-
             exchange.getResponse()
                     .setStatusCode(HttpStatus.UNAUTHORIZED);
 
