@@ -40,7 +40,7 @@ public class KafkaConsumerConfig {
 
         config.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
+                "kafka:9092"
         );
 
         config.put(
@@ -89,10 +89,6 @@ public class KafkaConsumerConfig {
         return factory;
     }
 
-    // =========================================================
-    // SHIPMENT EVENT CONSUMER FACTORY
-    // =========================================================
-
     @Bean
     public ConsumerFactory<String, ShipmentCreatedEvent>
     shipmentConsumerFactory() {
@@ -111,7 +107,7 @@ public class KafkaConsumerConfig {
 
         config.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
+                "kafka:9092"
         );
 
         config.put(
@@ -180,7 +176,7 @@ public class KafkaConsumerConfig {
 
         config.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
+                "kafka:9092"
         );
 
         config.put(
