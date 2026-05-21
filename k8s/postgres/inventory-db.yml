@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: inventory-db
+  namespace: intelligent-supply-chain
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: inventory-db
+
+  template:
+
+    metadata:
+      labels:
+        app: inventory-db
+
+    spec:
+
+      containers:
+
+        - name: inventory-db
+
+          image: postgres:16
+
+          ports:
+            - containerPort: 5432
+
+          env:
+
+            - name: POSTGRES_DB
+              value: supply_inventorydb
+
+            - name: POSTGRES_USER
+              value: postgres
+
+            - name: POSTGRES_PASSWORD
+              value: postgres
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: inventory-db
+  namespace: intelligent-supply-chain
+
+spec:
+
+  selector:
+    app: inventory-db
+
+  ports:
+    - port: 5432
+      targetPort: 5432
+
+  type: ClusterIP
