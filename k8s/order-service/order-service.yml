@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: order-service
+  namespace: intelligent-supply-chain
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: order-service
+
+  template:
+
+    metadata:
+      labels:
+        app: order-service
+
+    spec:
+
+      containers:
+
+        - name: order-service
+
+          image: yash01er/intelligent-order-service:v1
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 9010
+
+          env:
+
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: order-service
+  namespace: intelligent-supply-chain
+
+spec:
+
+  selector:
+    app: order-service
+
+  ports:
+    - port: 9010
+      targetPort: 9010
+
+  type: ClusterIP
