@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: inventory-service
+  namespace: intelligent-supply-chain
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: inventory-service
+
+  template:
+
+    metadata:
+      labels:
+        app: inventory-service
+
+    spec:
+
+      containers:
+
+        - name: inventory-service
+
+          image: yash01er/intelligent-inventory-service:v1
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 9030
+
+          env:
+
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: inventory-service
+  namespace: intelligent-supply-chain
+
+spec:
+
+  selector:
+    app: inventory-service
+
+  ports:
+    - port: 9030
+      targetPort: 9030
+
+  type: ClusterIP
