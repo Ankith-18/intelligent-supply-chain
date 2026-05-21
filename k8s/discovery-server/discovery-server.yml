@@ -27,9 +27,9 @@ spec:
       containers:
 
         - name: discovery-server
-          image: intelligent-discovery-server:latest
+          image: yash01er/intelligent-discovery-server:v1
 
-          imagePullPolicy: Never
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 8761
