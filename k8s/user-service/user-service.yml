@@ -1,5 +1,4 @@
 apiVersion: apps/v1
-
 kind: Deployment
 
 metadata:
@@ -13,7 +12,6 @@ spec:
     matchLabels:
       app: user-service
 
-
   template:
 
     metadata:
@@ -23,6 +21,7 @@ spec:
     spec:
 
       containers:
+
         - name: user-service
 
           image: yash01er/intelligent-user-service:v1
@@ -33,5 +32,25 @@ spec:
             - containerPort: 9020
 
           env:
-            - name: SPRING_PROFILE_ACTIVE
+
+            - name: SPRING_PROFILES_ACTIVE
               value: prod
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: user-service
+  namespace: intelligent-supply-chain
+
+spec:
+
+  selector:
+    app: user-service
+
+  ports:
+    - port: 9020
+      targetPort: 9020
+
+  type: ClusterIP
