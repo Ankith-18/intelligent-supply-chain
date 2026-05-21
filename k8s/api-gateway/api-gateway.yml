@@ -12,25 +12,46 @@ spec:
     matchLabels:
       app: api-gateway
 
-
   template:
+
     metadata:
       labels:
         app: api-gateway
 
-
     spec:
+
       containers:
 
         - name: api-gateway
-          image:  yash01er/intelligent-api-gateway:v1
+
+          image: yash01er/intelligent-api-gateway:v1
 
           imagePullPolicy: Always
 
           ports:
             - containerPort: 8081
 
-
           env:
-            - name: SPRING_PROFILE_ACTIVE
+
+            - name: SPRING_PROFILES_ACTIVE
               value: prod
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: api-gateway
+  namespace: intelligent-supply-chain
+
+spec:
+
+  selector:
+    app: api-gateway
+
+  ports:
+    - port: 8081
+      targetPort: 8081
+      nodePort: 30081
+
+  type: NodePort
