@@ -1,0 +1,35 @@
+# discovery service deployment
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: discovery-server
+  namespace: intelligent-supply-chain
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: discovery-server
+
+
+  template:
+
+    metadata:
+      labels:
+        app: discovery-server
+
+
+
+    spec:
+      containers:
+
+        - name: discovery-server
+          image: intelligent-discovery-server:latest
+
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8761
