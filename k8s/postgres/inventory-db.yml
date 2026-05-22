@@ -32,7 +32,7 @@ spec:
           env:
 
             - name: POSTGRES_DB
-              value: supply_userdb
+              value: supply_inventorydb
 
             - name: POSTGRES_USER
               valueFrom:

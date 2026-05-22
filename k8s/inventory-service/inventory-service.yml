@@ -24,7 +24,7 @@ spec:
 
         - name: inventory-service
 
-          image: yash01er/intelligent-inventory-service:v1
+          image: yash01er/intelligent-inventory-service:v2
 
           imagePullPolicy: Always
 
