@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: shipment-service
+  namespace: intelligent-supply-chain
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: shipment-service
+
+  template:
+
+    metadata:
+      labels:
+        app: shipment-service
+
+    spec:
+
+      containers:
+
+        - name: shipment-service
+
+          image: yash01er/intelligent-shipment-service:v1
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 9060
+
+          env:
+
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: shipment-service
+  namespace: intelligent-supply-chain
+
+spec:
+
+  selector:
+    app: shipment-service
+
+  ports:
+    - port: 9060
+      targetPort: 9060
+
+  type: ClusterIP
