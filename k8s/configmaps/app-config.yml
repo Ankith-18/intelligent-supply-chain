@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: app-config
+  namespace: intelligent-supply-chain
+
+data:
+
+  EUREKA_SERVER: http://discovery-server:8761/eureka/
+  KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  ZIPKIN_URL: http://zipkin:9411/api/v2/spans
