@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: return-service
+  namespace: intelligent-supply-chain
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: return-service
+
+  template:
+
+    metadata:
+      labels:
+        app: return-service
+
+    spec:
+
+      containers:
+
+        - name: return-service
+
+          image: yash01er/intelligent-return-service:v1
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 9080
+
+          env:
+
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: return-service
+  namespace: intelligent-supply-chain
+
+spec:
+
+  selector:
+    app: return-service
+
+  ports:
+    - port: 9080
+      targetPort: 9080
+
+  type: ClusterIP
