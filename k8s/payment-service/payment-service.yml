@@ -1,11 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 
-
 metadata:
   name: payment-service
   namespace: intelligent-supply-chain
-
 
 spec:
   replicas: 1
@@ -14,24 +12,45 @@ spec:
     matchLabels:
       app: payment-service
 
-
   template:
 
     metadata:
       labels:
         app: payment-service
 
-
     spec:
 
       containers:
+
         - name: payment-service
+
           image: yash01er/intelligent-payment-service:v1
+
           imagePullPolicy: Always
 
           ports:
             - containerPort: 9050
 
           env:
-            - name: SPRING_PROFILE_ACTIVE
+
+            - name: SPRING_PROFILES_ACTIVE
               value: prod
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: payment-service
+  namespace: intelligent-supply-chain
+
+spec:
+
+  selector:
+    app: payment-service
+
+  ports:
+    - port: 9050
+      targetPort: 9050
+
+  type: ClusterIP
