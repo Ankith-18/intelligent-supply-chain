@@ -34,6 +34,7 @@ The platform was first deployed locally using Minikube for Kubernetes testing/de
 ---
 
 # 🧩 Microservices
+![Screenshot 2026-05-22 115356.png](images/Screenshot%202026-05-22%20115356.png)
 
 | Service | Responsibility |
 |---|---|
@@ -100,11 +101,15 @@ Shipment Service
 
 # ☁️ Kubernetes Deployment
 
+![2nd int.png](images/2nd%20int.png)
+
 ## Local Deployment
 - Minikube
 - Kubernetes Services
 - Ingress
 - Configurations & Secrets
+- 
+![1st int.png](images/1st%20int.png)
 
 ## Cloud Deployment
 - AWS EKS Cluster
@@ -168,6 +173,8 @@ intelligent-supply-chain/
 ├── intelligent-supply-chain-chart/
 └── screenshots/
 ```
+
+![architectureInit.png](images/architectureInit.png)
 
 ---
 
