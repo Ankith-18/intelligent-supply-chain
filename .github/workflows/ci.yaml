@@ -7,7 +7,6 @@ on:
     branches: [main]
 
 jobs:
-
   # ----------------------------
   # Build Shared Kafka Library
   # ----------------------------
@@ -25,12 +24,9 @@ jobs:
           java-version: 21
           cache: maven
 
-      - name: Grant Permission
-        run: chmod +x mvnw
-        working-directory: shared-kafka-events
-
+      # shared-kafka-events has NO mvnw
       - name: Build Shared JAR
-        run: ./mvnw clean install -DskipTests
+        run: mvn clean install -DskipTests
         working-directory: shared-kafka-events
 
   # ----------------------------
@@ -63,11 +59,15 @@ jobs:
           java-version: 21
           cache: maven
 
-      # Reinstall shared lib because each job gets fresh runner
+      # each matrix runner is fresh
       - name: Build Shared Kafka Library
         run: mvn clean install -DskipTests
         working-directory: shared-kafka-events
 
+      # services DO have mvnw
+      - name: Grant Maven Permission
+        run: chmod +x mvnw
+        working-directory: ${{ matrix.service }}
 
       - name: Build Service
         run: ./mvnw clean install
