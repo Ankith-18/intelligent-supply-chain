@@ -1,24 +1,42 @@
 name: Docker Build & Push
 
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ["Microservices CI"]
+    types:
+      - completed
 
 jobs:
   docker-build-push:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        service:
-          - api-gateway
-          - discovery-server
-          - user-service
-          - order-service
-          - Inventory-service
-          - Payment-service
-          - shipment-service
-          - return-service
+        include:
+          - path: api-gateway
+            image: api-gateway
+
+          - path: discovery-server
+            image: discovery-server
+
+          - path: user-service
+            image: user-service
+
+          - path: order-service
+            image: order-service
+
+          - path: Inventory-service
+            image: inventory-service
+
+          - path: Payment-service
+            image: payment-service
+
+          - path: shipment-service
+            image: shipment-service
+
+          - path: return-service
+            image: return-service
 
     steps:
       - name: Checkout Repo
@@ -32,9 +50,9 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest .
-        working-directory: ${{ matrix.service }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ matrix.image }}:latest .
+        working-directory: ${{ matrix.path }}
 
       - name: Push Docker Image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.image }}:latest
