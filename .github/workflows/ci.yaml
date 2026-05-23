@@ -44,7 +44,7 @@ jobs:
           - user-service
           - order-service
           - Inventory-service
-          - payment-service
+          - Payment-service
           - shipment-service
           - return-service
 
