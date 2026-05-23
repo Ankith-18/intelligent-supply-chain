@@ -1,0 +1,74 @@
+name: Microservices CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ----------------------------
+  # Build Shared Kafka Library
+  # ----------------------------
+  build-shared-lib:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      # shared-kafka-events has NO mvnw
+      - name: Build Shared JAR
+        run: mvn clean install -DskipTests
+        working-directory: shared-kafka-events
+
+  # ----------------------------
+  # Build Microservices
+  # ----------------------------
+  build-services:
+    runs-on: ubuntu-latest
+    needs: build-shared-lib
+
+    strategy:
+      matrix:
+        service:
+          - api-gateway
+          - discovery-server
+          - user-service
+          - order-service
+          - Inventory-service
+          - Payment-service
+          - shipment-service
+          - return-service
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      # each matrix runner is fresh
+      - name: Build Shared Kafka Library
+        run: mvn clean install -DskipTests
+        working-directory: shared-kafka-events
+
+      # services DO have mvnw
+      - name: Grant Maven Permission
+        run: chmod +x mvnw
+        working-directory: ${{ matrix.service }}
+
+      - name: Build Service
+        run: ./mvnw clean install -DskipTests
+        working-directory: ${{ matrix.service }}

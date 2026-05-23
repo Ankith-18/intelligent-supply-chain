@@ -1,13 +1,13 @@
-
 FROM maven:3.9.9-eclipse-temurin-21 AS build
+
 WORKDIR /app
 
-COPY . .
-
-
+COPY shared-kafka-events ./shared-kafka-events
 WORKDIR /app/shared-kafka-events
 RUN mvn clean install -DskipTests
 
+WORKDIR /app
+COPY Inventory-service ./Inventory-service
 WORKDIR /app/Inventory-service
 RUN mvn clean package -DskipTests
 
@@ -18,4 +18,4 @@ COPY --from=build /app/Inventory-service/target/*.jar app.jar
 
 EXPOSE 9030
 
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]
+ENTRYPOINT ["java","-jar","app.jar","--spring.profiles.active=prod"]

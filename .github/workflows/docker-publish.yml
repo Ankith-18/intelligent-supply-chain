@@ -1,0 +1,59 @@
+name: Docker Build & Push
+
+on:
+  workflow_run:
+    workflows: ["Microservices CI"]
+    types:
+      - completed
+
+jobs:
+  docker-build-push:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - path: api-gateway
+            image: api-gateway
+
+          - path: discovery-server
+            image: discovery-server
+
+          - path: user-service
+            image: user-service
+
+          - path: order-service
+            image: order-service
+
+          - path: Inventory-service
+            image: inventory-service
+
+          - path: Payment-service
+            image: payment-service
+
+          - path: shipment-service
+            image: shipment-service
+
+          - path: return-service
+            image: return-service
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker Image
+        run: |
+            docker build \
+                -f ${{ matrix.path }}/Dockerfile \
+                -t ${{ secrets.DOCKER_USERNAME }}/${{ matrix.image }}:latest .
+
+      - name: Push Docker Image
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ matrix.image }}:latest
