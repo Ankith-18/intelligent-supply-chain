@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/discovery-server
 RUN mvn clean package -DskipTests
 
 

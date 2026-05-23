@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/api-gateway
 RUN mvn clean package -DskipTests
 
 
