@@ -50,8 +50,9 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ matrix.image }}:latest .
-        working-directory: ${{ matrix.path }}
+            docker build \
+                -f ${{ matrix.path }}/Dockerfile \
+                -t ${{ secrets.DOCKER_USERNAME }}/${{ matrix.image }}:latest .
 
       - name: Push Docker Image
         run: |
