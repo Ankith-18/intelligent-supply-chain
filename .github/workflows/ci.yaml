@@ -43,7 +43,7 @@ jobs:
           - discovery-server
           - user-service
           - order-service
-          - inventory-service
+          - Inventory-service
           - payment-service
           - shipment-service
           - return-service
