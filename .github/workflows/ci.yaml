@@ -65,14 +65,9 @@ jobs:
 
       # Reinstall shared lib because each job gets fresh runner
       - name: Build Shared Kafka Library
-        run: |
-          chmod +x mvnw
-          ./mvnw clean install -DskipTests
+        run: mvn clean install -DskipTests
         working-directory: shared-kafka-events
 
-      - name: Grant Maven Permission
-        run: chmod +x mvnw
-        working-directory: ${{ matrix.service }}
 
       - name: Build Service
         run: ./mvnw clean install
