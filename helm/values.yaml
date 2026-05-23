@@ -1,0 +1,28 @@
+image:
+  repository: yash01er
+  tag: latest
+
+services:
+  - name: api-gateway
+    port: 8080
+
+  - name: discovery-server
+    port: 8761
+
+  - name: user-service
+    port: 9020
+
+  - name: order-service
+    port: 9010
+
+  - name: inventory-service
+    port: 9030
+
+  - name: payment-service
+    port: 9050
+
+  - name: shipment-service
+    port: 9060
+
+  - name: return-service
+    port: 9080
