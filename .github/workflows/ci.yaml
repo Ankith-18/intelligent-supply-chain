@@ -1,0 +1,83 @@
+name: Microservices CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+
+  # ----------------------------
+  # Build Shared Kafka Library
+  # ----------------------------
+  build-shared-lib:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Grant Permission
+        run: chmod +x mvnw
+        working-directory: shared-kafka-events
+
+      - name: Build Shared JAR
+        run: ./mvnw clean install -DskipTests
+        working-directory: shared-kafka-events
+
+  # ----------------------------
+  # Build Microservices
+  # ----------------------------
+  build-services:
+    runs-on: ubuntu-latest
+    needs: build-shared-lib
+
+    strategy:
+      matrix:
+        service:
+          - api-gateway
+          - discovery-server
+          - user-service
+          - order-service
+          - inventory-service
+          - payment-service
+          - shipment-service
+          - return-service
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      # Reinstall shared lib because each job gets fresh runner
+      - name: Build Shared Kafka Library
+        run: |
+          chmod +x mvnw
+          ./mvnw clean install -DskipTests
+        working-directory: shared-kafka-events
+
+      - name: Grant Maven Permission
+        run: chmod +x mvnw
+        working-directory: ${{ matrix.service }}
+
+      - name: Build Service
+        run: ./mvnw clean install
+        working-directory: ${{ matrix.service }}
+
+      - name: Run Unit Tests
+        run: ./mvnw test
+        working-directory: ${{ matrix.service }}
