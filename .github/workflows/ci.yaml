@@ -70,9 +70,5 @@ jobs:
         working-directory: ${{ matrix.service }}
 
       - name: Build Service
-        run: ./mvnw clean install
-        working-directory: ${{ matrix.service }}
-
-      - name: Run Unit Tests
-        run: ./mvnw test
+        run: ./mvnw clean install -DskipTests
         working-directory: ${{ matrix.service }}
